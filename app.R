@@ -2,21 +2,23 @@
 library(shiny)
 
 ui <- fluidPage(
+	
+	#TODO header of infoboxes
+	#   #of tasks | timestamp  
+	#   #of flagstates | #of species
 
-    # Application title
-    titlePanel("WECAFIS Dashboard"),
-
-    
+	#tabs
+	#tab1 Statistics
+	#TODO 
+	#tab2 map viewer
     shiny::htmlOutput("frame")
 )
 
 # Define server logic required to draw a histogram
 server <- function(input, output) {
   output$frame <- renderUI({
-    input$Member
-    my_test <- tags$iframe(src="https://wecafc-firms.d4science.org/data-viewer", height="800px", width="100%")
-    print(my_test)
-    my_test
+    my_iframe <- tags$iframe(src="https://wecafc-firms.d4science.org/data-viewer", height="700px", width="100%")
+    my_iframe
   })
 }
 
