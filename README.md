@@ -1,1 +1,1 @@
-# dashboard-wecafis
+# wecafis-dashboard
