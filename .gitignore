@@ -1,3 +1,5 @@
 rsconnect
 .RProj.*
 .Rhistory
+.Rproj.user
+.REnviron
