@@ -277,7 +277,7 @@ server <- function(input, output) {
       xgap=10,
       ygap=10,
       colorscale = color_s,
-      colorbar=list(tickmode='array',tickvals=c(0,1),ticktext=c("missing","validate"),len=0.2), type = "heatmap"
+      colorbar=list(tickmode='array',tickvals=c(0,1),ticktext=c("missing","available"),len=0.2), type = "heatmap"
     )
     
     fig<-layout(fig,
