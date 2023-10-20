@@ -37,20 +37,32 @@ tasks<-c(
   "Fleet engagement"="task-III.1"
 )
 
+#datasets
+#---------------------------------------------------------------------------------------
+dt_reporting_entities<-readr::read_csv("https://raw.githubusercontent.com/fdiwg/fdi-codelists/main/regional/wecafc/cl_flagstate.csv")
+
 #db
 #---------------------------------------------------------------------------------------
-pool <- try(pool::dbPool(
+cat("DB connection parameters\n")
+cat(paste0("DB_DRV ", Sys.getenv("DB_DRV"), "\n"))
+cat(paste0("DB_HOST: ", Sys.getenv("DB_HOST"), "\n"))
+cat(paste0("DB_PORT: ", Sys.getenv("DB_PORT"), "\n"))
+cat(paste0("DB_DBNAME: ", Sys.getenv("DB_DBNAME"), "\n"))
+cat(paste0("DB_USER: ", Sys.getenv("DB_USER"), "\n"))
+if(Sys.getenv("DB_PASSWORD")!="") cat(paste0("DB_PASSWORD: **********\n"))
+conn_start = Sys.time()
+cat(paste0("Before connection: ",format(conn_start,"%y%m%d %H:%M:%S"),"\n"))
+pool <- DBI::dbConnect(
   drv = DBI::dbDriver(Sys.getenv("DB_DRV")),
   dbname = Sys.getenv("DB_DBNAME"),
   host = Sys.getenv("DB_HOST"),
   port = Sys.getenv("DB_PORT"),
   user = Sys.getenv("DB_USER"),
   password = Sys.getenv("DB_PASSWORD")
-))
-
-#datasets
-#---------------------------------------------------------------------------------------
-dt_reporting_entities<-readr::read_csv("https://raw.githubusercontent.com/fdiwg/fdi-codelists/main/regional/wecafc/cl_flagstate.csv")
+)
+end_start = Sys.time()
+cat(paste0("After connection:", format(end_start,"%y%m%d %H:%M:%S"),"\n"))
+cat(paste0("Difference: ", as.character(end_start-conn_start), " s\n"))
 
 #main Shiny scripts
 #---------------------------------------------------------------------------------------
