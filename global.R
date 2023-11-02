@@ -6,10 +6,11 @@ options(shiny.maxRequestSize=200*1024^2) #increase upload size to 200Mb
 #packages
 #---------------------------------------------------------------------------------------
 library(shiny)
+library(config)
+library(DBI)
 library(pool)
 library(RPostgres)
 library(dplyr)
-library(DBI)
 library(lubridate)
 library(tidyr)
 library(plotly)
@@ -23,46 +24,6 @@ library(shinyWidgets)
 #---------------------------------------------------------------------------------------
 scripts <- as.list(list.files("assets/scripts", recursive = T, full.names = TRUE))
 invisible(lapply(scripts, source))
-
-#env
-#---------------------------------------------------------------------------------------
-try(dotenv::load_dot_env(file = ".REnviron"), silent = TRUE)
-
-#tasks
-#---------------------------------------------------------------------------------------
-tasks<-c(
-  "Nominal catches"="task-I.2",
-  "Catch"="task-II.1",
-  "Effort"="task-II.2",
-  "Fleet engagement"="task-III.1"
-)
-
-#datasets
-#---------------------------------------------------------------------------------------
-dt_reporting_entities<-readr::read_csv("https://raw.githubusercontent.com/fdiwg/fdi-codelists/main/regional/wecafc/cl_flagstate.csv")
-
-#db
-#---------------------------------------------------------------------------------------
-cat("DB connection parameters\n")
-cat(paste0("DB_DRV ", Sys.getenv("DB_DRV"), "\n"))
-cat(paste0("DB_HOST: ", Sys.getenv("DB_HOST"), "\n"))
-cat(paste0("DB_PORT: ", Sys.getenv("DB_PORT"), "\n"))
-cat(paste0("DB_DBNAME: ", Sys.getenv("DB_DBNAME"), "\n"))
-cat(paste0("DB_USER: ", Sys.getenv("DB_USER"), "\n"))
-if(Sys.getenv("DB_PASSWORD")!="") cat(paste0("DB_PASSWORD: **********\n"))
-conn_start = Sys.time()
-cat(paste0("Before connection: ",format(conn_start,"%y%m%d %H:%M:%S"),"\n"))
-pool <- DBI::dbConnect(
-  drv = DBI::dbDriver(Sys.getenv("DB_DRV")),
-  dbname = Sys.getenv("DB_DBNAME"),
-  host = Sys.getenv("DB_HOST"),
-  port = Sys.getenv("DB_PORT"),
-  user = Sys.getenv("DB_USER"),
-  password = Sys.getenv("DB_PASSWORD")
-)
-end_start = Sys.time()
-cat(paste0("After connection:", format(end_start,"%y%m%d %H:%M:%S"),"\n"))
-cat(paste0("Difference: ", as.character(end_start-conn_start), " s\n"))
 
 #main Shiny scripts
 #---------------------------------------------------------------------------------------

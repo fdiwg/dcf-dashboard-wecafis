@@ -1,6 +1,45 @@
 # Define server logic required to draw a histogram
 server <- function(input, output) {
   
+  #tasks
+  #---------------------------------------------------------------------------------------
+  tasks<-c(
+    "Nominal catches"="task-I.2",
+    "Catch"="task-II.1",
+    "Effort"="task-II.2",
+    "Fleet engagement"="task-III.1"
+  )
+  
+  #datasets
+  #---------------------------------------------------------------------------------------
+  dt_reporting_entities<-readr::read_csv("https://raw.githubusercontent.com/fdiwg/fdi-codelists/main/regional/wecafc/cl_flagstate.csv")
+  
+  #db
+  #---------------------------------------------------------------------------------------
+  cat("DB connection parameters\n")
+  conn_args <- config::get("dataconnection")
+  cat(paste0("DB_DRV: ", conn_args$drv, "\n"))
+  cat(paste0("DB_HOST: ", conn_args$host, "\n"))
+  cat(paste0("DB_PORT: ", conn_args$port, "\n"))
+  cat(paste0("DB_DBNAME: ", conn_args$dbname, "\n"))
+  cat(paste0("DB_USER: ", conn_args$user, "\n"))
+  if(conn_args$password!="") cat(paste0("DB_PASSWORD: **********\n"))
+  conn_start = Sys.time()
+  cat(paste0("Before connection: ",format(conn_start,"%y%m%d %H:%M:%S"),"\n"))
+  pool <- pool::dbPool(
+    drv = DBI::dbDriver(conn_args$drv),
+    dbname = conn_args$dbname,
+    host = conn_args$host,
+    port = conn_args$port,
+    user = conn_args$user,
+    password = conn_args$password
+  )
+  end_start = Sys.time()
+  cat(paste0("After connection:", format(end_start,"%y%m%d %H:%M:%S"),"\n"))
+  cat(paste0("Difference: ", as.character(end_start-conn_start), " s\n"))
+  
+  
+  
   data_tasks<-lapply(setNames(tasks,tasks),function(x){
     file<-getDataTaskDBData(pool, x)
   })
