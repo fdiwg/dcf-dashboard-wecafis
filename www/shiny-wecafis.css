@@ -1,0 +1,19 @@
+body { 
+  font-family: 'Open Sans',Arial ,Helvetica, Verdana, sans-serif !important; 
+}
+
+
+.nav-tabs-custom>.nav-tabs>li.active:hover>a, .nav-tabs-custom>.nav-tabs>li.active>a{
+    background-color: #7f9ca0;
+    color: #ffffff;
+}
+.nav-tabs-custom>.nav-tabs>li>a{
+    background-color: #ccd7d9 ;
+    color: #003b43;
+}
+
+.nav-tabs-custom>.nav-tabs>li:hover>a{
+    background-color: #7f9ca0;
+    color: #ffffff;
+}
+    

@@ -47,37 +47,56 @@ server <- function(input, output) {
   reporting_entities<-dt_reporting_entities$code
   
   output$indicators<-renderUI({
-    div(
-      column(12,
-             infoBox("Flagstates",length(getUniqueValues(data_tasks,tasks,"flagstate")), icon = icon("flag"), fill = TRUE,color="blue",width = 3),
-             infoBox("Tasks",length(data_tasks), icon = icon("list-check"), fill = TRUE,color="yellow",width = 3),
-             infoBox("Period",sprintf("%s-%s",min(year(getUniqueValues(data_tasks,tasks,"time_start"))),max(year(getUniqueValues(data_tasks,tasks,"time_end")))), icon = icon("clock"), fill = TRUE,color="green",width = 3),
-             infoBox("Species",length(getUniqueValues(data_tasks,tasks,"species")), icon = icon("fish"), fill = TRUE,color="aqua",width = 3)
-      )
+    div( class="row",
+        div(class = "col-12 col-sm-6 col-md-6 col-lg-3 col-xl-3",infoBox("Flagstates",length(getUniqueValues(data_tasks,tasks,"flagstate")), icon = icon("flag"), fill = TRUE,color="blue",width = NULL)),
+        div(class = "col-12 col-sm-6 col-md-6 col-lg-3 col-xl-3",infoBox("Tasks",length(data_tasks), icon = icon("list-check"), fill = TRUE,color="yellow",width = NULL)),
+        div(class = "col-12 col-sm-6 col-md-6 col-lg-3 col-xl-3",infoBox("Period",sprintf("%s-%s",min(year(getUniqueValues(data_tasks,tasks,"time_start"))),max(year(getUniqueValues(data_tasks,tasks,"time_end")))), icon = icon("clock"), fill = TRUE,color="green",width = NULL)),
+        div(class = "col-12 col-sm-6 col-md-6 col-lg-3 col-xl-3",infoBox("Species",length(getUniqueValues(data_tasks,tasks,"species")), icon = icon("fish"), fill = TRUE,color="aqua",width = NULL))
     )
   })
   
   
   data<-reactiveVal(NULL)
   data_s<-reactiveVal(NULL)
+  gap<-reactiveVal(5)
+  heatmap_size<-reactiveVal(12)
   dataAvailable<-reactiveVal(ifelse(length(data_tasks)==0,FALSE,TRUE))
+  
+  observeEvent(input$dimension,{
+    
+    print(sprintf("WINDOW WIDTH : %s ; WINDOW HEIGHT : %s",input$dimension[1],input$dimension[2]))
+    
+    newgap<-ifelse(input$dimension[1]>2000,10,
+                   ifelse(input$dimension[1]>1000,5,
+                          ifelse(input$dimension[1]>600,3,
+                                        1)))
+    gap<-gap(newgap)
+    
+    newsize<-ifelse(input$dimension[1]>2000,14,
+                    ifelse(input$dimension[1]>1000,12,
+                           ifelse(input$dimension[1]>600,8,
+                                  6)))
+      
+    heatmap_size<-heatmap_size(newsize)
+  })
   
   output$summary_content<-renderUI({
     tagList(
       fluidRow(
-        div(
-          class = "col-md-2",
+        div(class = "row",
+          class = "col-12 col-sm-6 col-md-4 col-lg-2 col-xl-2",
           uiOutput("entities_selector_s")
         ),
         div(
-          class = "col-md-2",
+          class = "col-12 col-sm-6 col-md-4 col-lg-2 col-xl-2",
           uiOutput("stat_selector_s")
         ),
         div(
-          class = "col-md-2",
+          class = "col-12 col-sm-6 col-md-4 col-lg-2 col-xl-2",
           uiOutput("download_wrapper")
         )
       ),
+      uiOutput("heatmap_s_legend"),
       uiOutput("heatmap_s_wrapper")
       
     )
@@ -87,16 +106,17 @@ server <- function(input, output) {
     if(dataAvailable()){
       tagList(
         fluidRow(
-          div(
-            class = "col-md-2",
+          div(class="row",
+            class = "col-12 col-sm-6 col-md-4 col-lg-2 col-xl-2",
             uiOutput("task_selector")
           ),
           div(
-            class = "col-md-2",
+            class = "col-12 col-sm-6 col-md-4 col-lg-2 col-xl-2",
             uiOutput("entities_selector")
           )
         ),
         fluidRow(
+          uiOutput("heatmap_legend"),
           withSpinner(plotlyOutput("heatmap"),type=4)
         )
       )}else{
@@ -107,6 +127,7 @@ server <- function(input, output) {
   output$menu<-renderUI({
     tagList(
     uiOutput("indicators"),
+    div(class = "col-md-12",
     tabBox(id = "tabbox",title=NULL,height="600px",width = "100%",
            tabPanel(title=tagList(icon("clipboard")," Summary"),
                     value="tab_summary",
@@ -120,6 +141,7 @@ server <- function(input, output) {
                     value="tab_map",
                     shiny::htmlOutput("frame")
            )
+    )
     )
     )
   })
@@ -207,7 +229,7 @@ server <- function(input, output) {
   output$download_wrapper<-renderUI({
     req(data_s())
     if(nrow(data_s())>0){
-      downloadButton("download",label="Download summary",icon=shiny::icon("file-excel"),style = "padding: 5px 20px; margin: 2px 8px;")
+      downloadButton("download",label="Download summary",icon=shiny::icon("file-excel"),style = "background: #0d6cac !important;  padding: 5px 20px!important; margin: 2px 8px; color: #fff !important; border-radius: 0.25rem; border: 0;")
     }
   })
   
@@ -313,10 +335,13 @@ server <- function(input, output) {
       z = df_matrix,
       zmin=0,
       zmax=1,
-      xgap=10,
-      ygap=10,
+      xgap=gap(),
+      ygap=gap(),
       colorscale = color_s,
-      colorbar=list(tickmode='array',tickvals=c(0,1),ticktext=c("missing","available"),len=0.2), type = "heatmap"
+      colorbar=list(tickmode='array',tickvals=c(0,1),ticktext=c("missing","available"),len=0.2), 
+      type = "heatmap",
+      showscale = FALSE 
+      
     )
     
     fig<-layout(fig,
@@ -388,11 +413,13 @@ server <- function(input, output) {
         z = df_matrix,
         zmin=0,
         zmax=max(as.numeric(text$stat)),
-        xgap=10,
-        ygap=10,
+        xgap=gap(),
+        ygap=gap(),
         color = df$value,
-        colors = c("grey", "#45AD15"),
-        type = "heatmap"
+        colors = c("grey", "green"),
+        type = "heatmap",
+        showscale = FALSE,
+        textposition = 'inside'
       )
       
     }else{
@@ -404,19 +431,22 @@ server <- function(input, output) {
         z = df_matrix,
         zmin=0,
         zmax=1,
-        xgap=10,
-        ygap=10,
-        colorscale = setNames(data.frame(c(0,1),c("grey","#45AD15") ), NULL),
+        xgap=gap(),
+        ygap=gap(),
+        colorscale = setNames(data.frame(c(0,1),c("grey","green") ), NULL),
         colorbar=list(tickmode='array',tickvals=c(0,1),ticktext=c("no data","data"),len=0.2), 
-        type = "heatmap"
+        type = "heatmap",
+        showscale = FALSE,
+        textposition='inside'
       )
       
     }
     
     fig<-layout(fig,
                 showlegend = FALSE,
+                uniformtext=list(minsize=0, mode='show'),
                 xaxis = list(side ="top",showgrid = F)
-    )%>% add_annotations(x = text$task, y = text$flagstate, text = text$stat, xref = 'x', yref = 'y', showarrow = FALSE, font=list(color='black'))
+    )%>%add_annotations(x = text$task, y = text$flagstate, text = text$stat, xref = 'x', yref = 'y', showarrow = FALSE, font=list(size=heatmap_size(),color='black'))
     return(fig)
   })
   output$nodata_s<-renderUI({
@@ -436,6 +466,15 @@ server <- function(input, output) {
     }
   })
   
+  output$heatmap_s_legend<-renderUI({
+    fluidRow(HTML("<i class='fa-solid fa-circle' style='color: green;'></i>&nbsp;data&emsp;&emsp;<i class='fa-solid fa-circle' style='color: grey;'></i>&nbsp;no data"),align="center")
+  })
+  
+  output$heatmap_legend<-renderUI({
+    req(!is.null(data()))
+    req(!is.null(input$limit_entities))
+    fluidRow(HTML("<i class='fa-solid fa-circle' style='color: green;'></i>&nbsp;available&emsp;&emsp;<i class='fa-solid fa-circle' style='color: grey;'></i>&nbsp;missing"),align="center")
+  })
   
   output$frame <- renderUI({
     my_iframe <- tags$iframe(src="https://wecafc-firms.d4science.org/data-viewer/?about=false&find=false&mode=2D&baseview=World%20Imagery&views=%5B%22pid%3Drdb_firms_resource_points%2Clyr%3Drdb_firms_resource_points%2Cstrategy%3Dogc_filters%2Cpar%3D(AGENCY%20IN('WECAFC'))%2Cq%3Dfalse%22%2C%22pid%3Drdb_firms_fishery_points%2Clyr%3Drdb_firms_fishery_points%2Cstrategy%3Dogc_filters%2Cpar%3D(AGENCY%20IN('WECAFC'))%2Cq%3Dfalse%22%2C%22pid%3Drdb_wecafc_task_i_2%2Clyr%3Drdb_wecafc_task_i_2%2Cstrategy%3Dogc_viewparams%2Cpar%3Dyear%3A1981%2B1982%2B1983%2B1984%2B1985%2B1986%2B1987%2B1988%2B1989%2B1990%2B1991%2B1992%2B1993%2B1994%2B1995%2B1996%2B1997%2B1998%2B1999%2B2000%2B2001%2B2002%2B2003%2B2004%2B2005%2B2006%2B2007%2B2008%2B2009%2B2010%2B2011%2B2012%2B2013%2B2014%2B2015%2B2016%2B2017%2B2018%2B2019%2B2020%2B2021%3Baggregation_method%3Aavg_by_year%2Cvar%3Dmeasurement_value%2Cfun%3Dckmeans%2Cmaptype%3Dchoropleth%2Cenv%3Dgeom%3Aundefined%3Bvar%3Ameasurement_value%3Bv1%3A2141.9900000000157%3Bv2%3A6201.652860070296%3Bv3%3A9491.593350267623%3Bv4%3A12145.910000000169%3Bv5%3A19467.330000000173%3Bv6%3A19514.360000000495%3Bc1%3A%23fee5d9%3Bc2%3A%23fcae91%3Bc3%3A%23fb6a4a%3Bc4%3A%23de2d26%3Bc5%3A%23a50f15%3B%2Ccs%3DReds%2Ccount%3D8%2Cstyle%3Ddyn_geom-polygon_map-choropleth_class-5%2Cq%3Dfalse%22%5D&extent=-96.69803700673097,-15.229528784752688,-22.86991200673097,45.94234621524731&center=-59.78397450673097,15.356408715247312&zoom=4", height="700px", width="100%")
