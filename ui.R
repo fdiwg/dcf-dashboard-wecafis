@@ -1,11 +1,19 @@
 ui <- fluidPage(
   useShinyjs(),
   useShinydashboard(),
-  #TODO header of infoboxes
-  #   #of tasks | timestamp  
-  #   #of flagstates | #of species
-  
-  #tabs
-  #tab1 Statistics
+  tags$head(
+    tags$link(rel = "stylesheet", type = "text/css", href = "shiny-wecafis.css"),
+    tags$script('var dimension = [0, 0];
+                 $(document).on("shiny:connected", function(e) {
+                      dimension[0] = window.innerWidth;
+                      dimension[1] = window.innerHeight;
+                      Shiny.onInputChange("dimension", dimension);
+                  });
+                  $(window).resize(function(e) {
+                      dimension[0] = window.innerWidth;
+                      dimension[1] = window.innerHeight;
+                      Shiny.onInputChange("dimension", dimension);
+                  });')
+    ),
   uiOutput("menu"),
 )
