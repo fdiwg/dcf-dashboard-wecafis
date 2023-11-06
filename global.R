@@ -18,6 +18,7 @@ library(shinyjs)
 library(shinydashboard)
 library(shinycssloaders)
 library(openxlsx)
+library(waiter)
 library(shinyWidgets)
 
 #utils
