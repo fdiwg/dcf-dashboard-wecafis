@@ -62,11 +62,14 @@ server <- function(input, output,session) {
   waiter_hide()
   
   output$indicators<-renderUI({
+    print("TEST HERE")
+    print(getUniqueValues(data_tasks,tasks,"flagstate"))
+    print("TEST END")
     div( class="row",
-         div(class = "col-12 col-sm-6 col-md-6 col-lg-3 col-xl-3",infoBox("Flagstates",length(getUniqueValues(data_tasks,tasks,"flagstate")), icon = icon("flag"), fill = TRUE,color="blue",width = NULL)),
-         div(class = "col-12 col-sm-6 col-md-6 col-lg-3 col-xl-3",infoBox("Tasks",length(data_tasks), icon = icon("list-check"), fill = TRUE,color="yellow",width = NULL)),
-         div(class = "col-12 col-sm-6 col-md-6 col-lg-3 col-xl-3",infoBox("Period",sprintf("%s-%s",min(year(getUniqueValues(data_tasks,tasks,"time_start"))),max(year(getUniqueValues(data_tasks,tasks,"time_end")))), icon = icon("clock"), fill = TRUE,color="green",width = NULL)),
-         div(class = "col-12 col-sm-6 col-md-6 col-lg-3 col-xl-3",infoBox("Species",length(getUniqueValues(data_tasks,tasks,"species")), icon = icon("fish"), fill = TRUE,color="aqua",width = NULL))
+         div(class = "col-xs-3 col-sm-6 col-md-6 col-lg-3 col-xl-3",infoBox("Flagstates",sprintf("%s / %s",length(getUniqueValues(data_tasks,tasks,"flagstate")),length(reporting_entities)), icon = icon("flag"), fill = TRUE,color="blue",width = NULL)),
+         div(class = "col-xs-3 col-sm-6 col-md-6 col-lg-3 col-xl-3",infoBox("Tasks",length(data_tasks), icon = icon("list-check"), fill = TRUE,color="yellow",width = NULL)),
+         div(class = "col-xs-3 col-sm-6 col-md-6 col-lg-3 col-xl-3",infoBox("Period",sprintf("%s-%s",min(year(getUniqueValues(data_tasks,tasks,"time_start"))),max(year(getUniqueValues(data_tasks,tasks,"time_end")))), icon = icon("clock"), fill = TRUE,color="green",width = NULL)),
+         div(class = "col-xs-3 col-sm-6 col-md-6 col-lg-3 col-xl-3",infoBox("Species",length(getUniqueValues(data_tasks,tasks,"species")), icon = icon("fish"), fill = TRUE,color="aqua",width = NULL))
     )
   })
   
@@ -489,5 +492,5 @@ server <- function(input, output,session) {
     my_iframe
   })
   
-  session$allowReconnect(TRUE)
+  #session$allowReconnect(TRUE)
 }
