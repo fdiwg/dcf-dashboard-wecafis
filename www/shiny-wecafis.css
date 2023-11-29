@@ -29,6 +29,10 @@ body {
   margin-left:45px;
 }
 
+.info-box{
+  min-height: 44px;
+}
+
 .info-box-icon{
     border-top-left-radius: 2px;
     border-top-right-radius: 0;

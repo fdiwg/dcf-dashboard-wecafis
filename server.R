@@ -11,10 +11,10 @@ server <- function(input, output,session) {
   #tasks
   #---------------------------------------------------------------------------------------
   tasks<-c(
-    "Nominal catches"="task-I.2",
-    "Catch"="task-II.1",
-    "Effort"="task-II.2",
-    "Fleet engagement"="task-III.1"
+    "Task I.2: Nominal catches"="task-I.2",
+    "Task II.1: Catch"="task-II.1",
+    "Task II.2: Effort"="task-II.2",
+    "Task III.1: Fleet engagement"="task-III.1"
   )
   
   #datasets
@@ -95,15 +95,15 @@ server <- function(input, output,session) {
     tagList(
       fluidRow(
         div(class = "row",
-          class = "col-12 col-sm-6 col-md-4 col-lg-2 col-xl-2",
+          class = "col-xs-4 col-sm-6 col-md-4 col-lg-2 col-xl-2",
           uiOutput("entities_selector_s")
         ),
         div(
-          class = "col-12 col-sm-6 col-md-4 col-lg-2 col-xl-2",
+          class = "col-xs-4 col-sm-6 col-md-4 col-lg-2 col-xl-2",
           uiOutput("stat_selector_s")
         ),
         div(
-          class = "col-12 col-sm-6 col-md-4 col-lg-2 col-xl-2",
+          class = "col-xs-4 col-sm-6 col-md-4 col-lg-2 col-xl-2",
           uiOutput("download_wrapper")
         )
       ),
@@ -212,7 +212,7 @@ server <- function(input, output,session) {
                       available_years=paste0(pretty_seq(sort(unique(year(time_end)))),collapse=";"))%>%
             arrange(desc(flagstate))%>%
             ungroup()%>%
-            mutate(task=x)
+            mutate(task=gsub(": ",":\n",names(tasks[tasks==x])))
           
         })
         )
