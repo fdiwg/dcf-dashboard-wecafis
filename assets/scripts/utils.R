@@ -127,7 +127,7 @@ getUniqueValues<-function(data,tasks,target){
       c()
     }}))
   summary<-unname(summary)
-  sumary<-unique(summary)
+  summary<-unique(summary)
   summary[!is.na(summary)]
 }
 

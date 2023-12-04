@@ -16,4 +16,33 @@ body {
     background-color: #7f9ca0;
     color: #ffffff;
 }
-    
+
+.info-box-text, .progress-description{
+  font-size: 12px;
+}
+
+.info-box-number{
+  font-size: 12px;
+}
+
+.info-box-content{
+  margin-left:45px;
+}
+
+.info-box{
+  min-height: 44px;
+}
+
+.info-box-icon{
+    border-top-left-radius: 2px;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 2px;
+    display: block;
+    float: left;
+    height: 44px;
+    width: 45px;
+    text-align: center;
+    font-size: 25px;
+    line-height: 44px;
+}

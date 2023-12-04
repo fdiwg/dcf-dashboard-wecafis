@@ -11,10 +11,10 @@ server <- function(input, output,session) {
   #tasks
   #---------------------------------------------------------------------------------------
   tasks<-c(
-    "Nominal catches"="task-I.2",
-    "Catch"="task-II.1",
-    "Effort"="task-II.2",
-    "Fleet engagement"="task-III.1"
+    "Task I.2: Nominal catches"="task-I.2",
+    "Task II.1: Catch"="task-II.1",
+    "Task II.2: Effort"="task-II.2",
+    "Task III.1: Fleet engagement"="task-III.1"
   )
   
   #datasets
@@ -62,11 +62,14 @@ server <- function(input, output,session) {
   waiter_hide()
   
   output$indicators<-renderUI({
+    print("TEST HERE")
+    print(getUniqueValues(data_tasks,tasks,"flagstate"))
+    print("TEST END")
     div( class="row",
-         div(class = "col-12 col-sm-6 col-md-6 col-lg-3 col-xl-3",infoBox("Flagstates",length(getUniqueValues(data_tasks,tasks,"flagstate")), icon = icon("flag"), fill = TRUE,color="blue",width = NULL)),
-         div(class = "col-12 col-sm-6 col-md-6 col-lg-3 col-xl-3",infoBox("Tasks",length(data_tasks), icon = icon("list-check"), fill = TRUE,color="yellow",width = NULL)),
-         div(class = "col-12 col-sm-6 col-md-6 col-lg-3 col-xl-3",infoBox("Period",sprintf("%s-%s",min(year(getUniqueValues(data_tasks,tasks,"time_start"))),max(year(getUniqueValues(data_tasks,tasks,"time_end")))), icon = icon("clock"), fill = TRUE,color="green",width = NULL)),
-         div(class = "col-12 col-sm-6 col-md-6 col-lg-3 col-xl-3",infoBox("Species",length(getUniqueValues(data_tasks,tasks,"species")), icon = icon("fish"), fill = TRUE,color="aqua",width = NULL))
+         div(class = "col-xs-3 col-sm-6 col-md-6 col-lg-3 col-xl-3",infoBox("Flagstates",sprintf("%s / %s",length(getUniqueValues(data_tasks,tasks,"flagstate")),length(reporting_entities)), icon = icon("flag"), fill = TRUE,color="blue",width = NULL)),
+         div(class = "col-xs-3 col-sm-6 col-md-6 col-lg-3 col-xl-3",infoBox("Tasks",length(data_tasks), icon = icon("list-check"), fill = TRUE,color="yellow",width = NULL)),
+         div(class = "col-xs-3 col-sm-6 col-md-6 col-lg-3 col-xl-3",infoBox("Period",sprintf("%s-%s",min(year(getUniqueValues(data_tasks,tasks,"time_start"))),max(year(getUniqueValues(data_tasks,tasks,"time_end")))), icon = icon("clock"), fill = TRUE,color="green",width = NULL)),
+         div(class = "col-xs-3 col-sm-6 col-md-6 col-lg-3 col-xl-3",infoBox("Species",length(getUniqueValues(data_tasks,tasks,"species")), icon = icon("fish"), fill = TRUE,color="aqua",width = NULL))
     )
   })
   
@@ -92,15 +95,15 @@ server <- function(input, output,session) {
     tagList(
       fluidRow(
         div(class = "row",
-          class = "col-12 col-sm-6 col-md-4 col-lg-2 col-xl-2",
+          class = "col-xs-4 col-sm-6 col-md-4 col-lg-2 col-xl-2",
           uiOutput("entities_selector_s")
         ),
         div(
-          class = "col-12 col-sm-6 col-md-4 col-lg-2 col-xl-2",
+          class = "col-xs-4 col-sm-6 col-md-4 col-lg-2 col-xl-2",
           uiOutput("stat_selector_s")
         ),
         div(
-          class = "col-12 col-sm-6 col-md-4 col-lg-2 col-xl-2",
+          class = "col-xs-4 col-sm-6 col-md-4 col-lg-2 col-xl-2",
           uiOutput("download_wrapper")
         )
       ),
@@ -209,7 +212,7 @@ server <- function(input, output,session) {
                       available_years=paste0(pretty_seq(sort(unique(year(time_end)))),collapse=";"))%>%
             arrange(desc(flagstate))%>%
             ungroup()%>%
-            mutate(task=x)
+            mutate(task=gsub(": ",":\n",names(tasks[tasks==x])))
           
         })
         )
@@ -493,5 +496,5 @@ server <- function(input, output,session) {
     my_iframe
   })
   
-  session$allowReconnect(TRUE)
+  #session$allowReconnect(TRUE)
 }
