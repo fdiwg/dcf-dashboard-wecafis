@@ -1,7 +1,7 @@
 ui <- fluidPage(
-  useShinyjs(),
-  useWaiter(),
-  useShinydashboard(),
+  shinyjs::useShinyjs(),
+  waiter::useWaiter(),
+  shinyWidgets::useShinydashboard(),
   tags$head(
     tags$link(rel = "stylesheet", type = "text/css", href = "shiny-wecafis.css"),
     tags$script('var dimension = [0, 0];
