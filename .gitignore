@@ -1,6 +1,8 @@
+renv/library/*
 rsconnect
 .RProj.*
 .Rhistory
 .Rproj.user
 .REnviron
+.Rprofile
 config.yml
