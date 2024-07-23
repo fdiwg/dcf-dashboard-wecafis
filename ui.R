@@ -3,7 +3,7 @@ ui <- fluidPage(
   useWaiter(),
   useShinydashboard(),
   tags$head(
-    tags$link(rel = "stylesheet", type = "text/css", href = "shiny-wecafis.css"),
+    tags$link(rel = "stylesheet", type = "text/css", href = "shiny-recofi.css"),
     tags$script('var dimension = [0, 0];
                  $(document).on("shiny:connected", function(e) {
                       dimension[0] = window.innerWidth;
