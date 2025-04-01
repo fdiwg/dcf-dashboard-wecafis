@@ -332,13 +332,10 @@
     "dcf.dashboard": {
       "Package": "dcf.dashboard",
       "Version": "0.1",
-      "Source": "GitHub",
-      "RemoteType": "github",
-      "RemoteHost": "api.github.com",
-      "RemoteRepo": "dcf-dashboard",
-      "RemoteUsername": "fdiwg",
-      "RemoteRef": "HEAD",
-      "RemoteSha": "2d822b5191724de6267f4f84890797d542db1097",
+      "Source": "Local",
+      "Remotes": "fdiwg/vrule",
+      "RemoteType": "local",
+      "RemoteUrl": "D:\\Documents\\DEV\\fdiwg\\dcf.dashboard_0.1.tar.gz",
       "Requirements": [
         "DBI",
         "R",
@@ -358,7 +355,7 @@
         "tidyr",
         "waiter"
       ],
-      "Hash": "3c7b63c13d3d60f75a0a91e0cdb695b1"
+      "Hash": "2e600339ff41de8ea232e66343e470eb"
     },
     "digest": {
       "Package": "digest",
@@ -1013,6 +1010,20 @@
       ],
       "Hash": "397b7b2a265bc5a7a06852524dabae20"
     },
+    "rhandsontable": {
+      "Package": "rhandsontable",
+      "Version": "0.3.8",
+      "Source": "Repository",
+      "Repository": "RSPM",
+      "Requirements": [
+        "htmlwidgets",
+        "jsonlite",
+        "magrittr",
+        "methods",
+        "utils"
+      ],
+      "Hash": "cc9b9fd1376181e84c88621711454676"
+    },
     "rlang": {
       "Package": "rlang",
       "Version": "1.1.4",
@@ -1399,6 +1410,29 @@
         "withr"
       ],
       "Hash": "390f9315bc0025be03012054103d227c"
+    },
+    "vrule": {
+      "Package": "vrule",
+      "Version": "0.1",
+      "Source": "GitHub",
+      "RemoteType": "github",
+      "RemoteHost": "api.github.com",
+      "RemoteRepo": "vrule",
+      "RemoteUsername": "fdiwg",
+      "RemoteRef": "HEAD",
+      "RemoteSha": "3afcd6263bfc567ae3532fa5063a47a925906894",
+      "Requirements": [
+        "R",
+        "R6",
+        "data.table",
+        "jsonlite",
+        "methods",
+        "parallel",
+        "readr",
+        "rhandsontable",
+        "stringi"
+      ],
+      "Hash": "5a06935336b2b6aa118d917f5ba70998"
     },
     "waiter": {
       "Package": "waiter",
