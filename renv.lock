@@ -332,10 +332,14 @@
     "dcf.dashboard": {
       "Package": "dcf.dashboard",
       "Version": "0.1",
-      "Source": "Local",
+      "Source": "GitHub",
       "Remotes": "fdiwg/vrule",
-      "RemoteType": "local",
-      "RemoteUrl": "D:\\Documents\\DEV\\fdiwg\\dcf.dashboard_0.1.tar.gz",
+      "RemoteType": "github",
+      "RemoteHost": "api.github.com",
+      "RemoteRepo": "dcf-dashboard",
+      "RemoteUsername": "fdiwg",
+      "RemoteRef": "HEAD",
+      "RemoteSha": "f606d811786e2d5d0438a3cc12149d245587f8f6",
       "Requirements": [
         "DBI",
         "R",
@@ -355,7 +359,7 @@
         "tidyr",
         "waiter"
       ],
-      "Hash": "2e600339ff41de8ea232e66343e470eb"
+      "Hash": "ea8d460df609fcd506b0ffddaa3dccd5"
     },
     "digest": {
       "Package": "digest",
