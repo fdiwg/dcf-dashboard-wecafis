@@ -339,7 +339,7 @@
       "RemoteRepo": "dcf-dashboard",
       "RemoteUsername": "fdiwg",
       "RemoteRef": "HEAD",
-      "RemoteSha": "f606d811786e2d5d0438a3cc12149d245587f8f6",
+      "RemoteSha": "454cd85b6e29988d9ca2779772d162df1e2f8bf2",
       "Requirements": [
         "DBI",
         "R",
@@ -359,7 +359,7 @@
         "tidyr",
         "waiter"
       ],
-      "Hash": "ea8d460df609fcd506b0ffddaa3dccd5"
+      "Hash": "d25afac3832f3ce534fbd1dc19a906cb"
     },
     "digest": {
       "Package": "digest",
@@ -1424,7 +1424,7 @@
       "RemoteRepo": "vrule",
       "RemoteUsername": "fdiwg",
       "RemoteRef": "HEAD",
-      "RemoteSha": "3afcd6263bfc567ae3532fa5063a47a925906894",
+      "RemoteSha": "4683584e0deeba091912fb77d5bed936211a7dd0",
       "Requirements": [
         "R",
         "R6",
@@ -1436,7 +1436,7 @@
         "rhandsontable",
         "stringi"
       ],
-      "Hash": "5a06935336b2b6aa118d917f5ba70998"
+      "Hash": "86c6757de12922b5995741aabf5e7d58"
     },
     "waiter": {
       "Package": "waiter",
